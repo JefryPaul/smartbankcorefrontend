@@ -1,33 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {Routes, Route} from 'react-router-dom'
+import LandingPage from './User/Pages/LandingPage'
+import Deposit from './User/Pages/Deposit'
+import HomePage from './User/Pages/HomePage'
+import Loan from './User/Pages/Loan'
+import Transactions from './User/Pages/Transactions'
+import UserLogin from './User/Pages/UserLogin'
+import UserRegistration from './User/Pages/UserRegistration'
+import Withdrawal from './User/Pages/Withdrawal'
+import AdminDashboard from './Admin/Pages/AdminDashboard'
+import Login from './Admin/Pages/Login'
+import ManageLoans from './Admin/Pages/ManageLoans'
+import ManageTransactions from './Admin/Pages/ManageTransactions'
+import ManageUser from './Admin/Pages/ManageUser'
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Routes>
+        <Route path={'/'} element={<LandingPage />}/>
+        <Route path={'deposit'} element={<Deposit />}/>
+        <Route path={'home'} element={<HomePage />}/>
+        <Route path={'loan'} element={<Loan />}/>
+        <Route path={'transactions'} element={<Transactions />}/> 
+        <Route path={'userlogin'} element={<UserLogin />} />
+        <Route path={'userregistration'} element={<UserRegistration />} />
+        <Route path={'withdrawal'} element={<Withdrawal />} /> 
+
+
+        <Route path={'admindashboard'} element={<AdminDashboard />} /> 
+        <Route path={'login'} element={<Login />} />
+        <Route path={'manageloans'} element={<ManageLoans />} />
+        <Route path={'managetransactions'} element={<ManageTransactions />} />
+        <Route path={'manageuser'} element={<ManageUser />} />
+      </Routes>
     </>
   )
 }

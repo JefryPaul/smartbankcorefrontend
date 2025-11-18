@@ -1,9 +1,83 @@
-import React from 'react'
+import React from "react";
+import { TextField, Button, Card, CardContent } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function UserLogin() {
   return (
-    <div>UserLogin</div>
-  )
+    <div
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{ backgroundColor: "#F8F3F0" }}
+    >
+      <Card
+        className="w-full max-w-md rounded-2xl shadow-lg"
+        style={{ backgroundColor: "#E8DAD4" }}
+      >
+        <CardContent>
+          {/* Title */}
+          <h1
+            className="text-2xl font-bold text-center mb-6"
+            style={{ color: "#2F1B19" }}
+          >
+            Login to SmartBank Pro
+          </h1>
+
+          {/* Email Field */}
+          <div className="mb-4">
+            <TextField
+              fullWidth
+              label="Email"
+              type="email"
+              variant="outlined"
+              InputProps={{ style: { backgroundColor: "white", borderRadius: 8 } }}
+            />
+          </div>
+
+          {/* Password Field */}
+          <div className="mb-6">
+            <TextField
+              fullWidth
+              label="Password"
+              type="password"
+              variant="outlined"
+              InputProps={{ style: { backgroundColor: "white", borderRadius: 8 } }}
+            />
+          </div>
+
+          {/* Login Button */}
+          <Button
+            fullWidth
+            variant="contained"
+            style={{
+              backgroundColor: "#8B3A3A",
+              padding: "12px",
+              borderRadius: "12px",
+              fontSize: "1rem",
+            }}
+          >
+            Login
+          </Button>
+
+          {/* Forgot Password */}
+          <div className="text-center mt-3">
+            <button
+              className="font-medium"
+              style={{ color: "#8B3A3A" }}
+            >
+              Forgot Password?
+            </button>
+          </div>
+
+          {/* Register Link */}
+          <div className="text-center mt-4" style={{ color: "#2F1B19" }}>
+            Don’t have an account?{" "}
+            <Link to="/register" className="font-semibold" style={{ color: "#8B3A3A" }}>
+              Register
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
 
-export default UserLogin
+export default UserLogin;
