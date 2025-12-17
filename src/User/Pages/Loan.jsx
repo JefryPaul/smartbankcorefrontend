@@ -12,7 +12,7 @@ function Loan() {
 
                 {/* Page Title */}
                 <div className="flex items-center gap-3 mb-8">
-                    <PaidIcon sx={{ fontSize: 40, color: "#8B3A3A" }} />
+                    {/* <PaidIcon sx={{ fontSize: 40, color: "#8B3A3A" }} /> */}
                     <h1 className="text-3xl font-bold" style={{ color: "#2F1B19" }}>
                         Apply for Loan
                     </h1>
@@ -59,7 +59,7 @@ function Loan() {
                             </label>
                             <input
                                 type="text"
-                                value="Auto (Admin)"
+                                value=""
                                 disabled
                                 className="w-full mt-1 p-3 rounded-lg border bg-gray-100"
                                 style={{ borderColor: "#C7A58C" }}
@@ -73,7 +73,7 @@ function Loan() {
                             </label>
                             <input
                                 type="text"
-                                value="Auto calculated"
+                                value=""
                                 disabled
                                 className="w-full mt-1 p-3 rounded-lg border bg-gray-100"
                                 style={{ borderColor: "#C7A58C" }}

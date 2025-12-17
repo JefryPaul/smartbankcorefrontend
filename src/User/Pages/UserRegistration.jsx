@@ -92,7 +92,7 @@ function UserRegistration() {
           {/* Login link */}
           <div className="text-center mt-4" style={{ color: "#2F1B19" }}>
             Already have an account?{" "}
-            <Link to="/login" className="font-semibold" style={{ color: "#8B3A3A" }}>
+            <Link to="/userlogin" className="font-semibold" style={{ color: "#8B3A3A" }}>
               Login
             </Link>
           </div>

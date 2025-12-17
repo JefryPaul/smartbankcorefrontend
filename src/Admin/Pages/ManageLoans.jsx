@@ -109,7 +109,7 @@ function ManageLoans() {
                       variant="body2"
                       sx={{ fontWeight: "bold", color: "#2F1B19" }}
                     >
-                      ✔ Processed
+                      Processed
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -129,7 +129,7 @@ function ManageLoans() {
                       variant="body2"
                       sx={{ fontWeight: "bold", color: "#2F1B19" }}
                     >
-                      ✔ Processed
+                      Processed
                     </Typography>
                   </TableCell>
                 </TableRow>

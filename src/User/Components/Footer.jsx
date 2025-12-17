@@ -13,7 +13,7 @@ function Footer() {
                 </h3>
 
                 <p className="flex justify-center items-center gap-2 text-lg">
-                    <Email sx={{ fontSize: 22 }} /> support@smartbank.com
+                    <Email sx={{ fontSize: 22 }} /> smartbankcore@gmail.com
                 </p>
 
                 <p className="flex justify-center items-center gap-2 text-lg mt-1">
@@ -48,7 +48,7 @@ function Footer() {
                     className="text-lg"
                     style={{ color: "#F8F3F0" }}
                 >
-                    Designed with ❤️ using React & Tailwind
+                    Copyright@ 2025
                 </p>
             </div>
         </footer>

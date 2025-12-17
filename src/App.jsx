@@ -1,4 +1,4 @@
-import {Routes, Route} from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import LandingPage from './User/Pages/LandingPage'
 import Deposit from './User/Pages/Deposit'
 import HomePage from './User/Pages/HomePage'
@@ -12,6 +12,7 @@ import Login from './Admin/Pages/Login'
 import ManageLoans from './Admin/Pages/ManageLoans'
 import ManageTransactions from './Admin/Pages/ManageTransactions'
 import ManageUser from './Admin/Pages/ManageUser'
+import Profile from './User/Pages/Profile'
 
 
 function App() {
@@ -19,17 +20,19 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path={'/'} element={<LandingPage />}/>
-        <Route path={'deposit'} element={<Deposit />}/>
-        <Route path={'home'} element={<HomePage />}/>
-        <Route path={'loan'} element={<Loan />}/>
-        <Route path={'transactions'} element={<Transactions />}/> 
+        <Route path={'/'} element={<LandingPage />} />
+        <Route path={'deposit'} element={<Deposit />} />
+        <Route path={'home'} element={<HomePage />} />
+        <Route path={'loan'} element={<Loan />} />
+        <Route path={'transactions'} element={<Transactions />} />
         <Route path={'userlogin'} element={<UserLogin />} />
         <Route path={'userregistration'} element={<UserRegistration />} />
-        <Route path={'withdrawal'} element={<Withdrawal />} /> 
+        <Route path={'withdrawal'} element={<Withdrawal />} />
+        <Route path={'profile'} element={<Profile />} />
 
 
-        <Route path={'admindashboard'} element={<AdminDashboard />} /> 
+
+        <Route path={'admindashboard'} element={<AdminDashboard />} />
         <Route path={'login'} element={<Login />} />
         <Route path={'manageloans'} element={<ManageLoans />} />
         <Route path={'managetransactions'} element={<ManageTransactions />} />

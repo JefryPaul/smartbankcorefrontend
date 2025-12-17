@@ -5,7 +5,9 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import LogoutIcon from "@mui/icons-material/Logout";
+import LogoutIcon from "@mui/icons-material/Logout"; 
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+
 
 function AdminSidebar() {
   return (
@@ -23,7 +25,7 @@ function AdminSidebar() {
       {/* Menu Items */}
       <nav className="flex-1 px-4 py-6 space-y-3 text-white">
         <Link
-          to="/admin/home"
+          to="/admindashboard"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#8B3A3A] transition"
         >
           <DashboardIcon />
@@ -31,7 +33,7 @@ function AdminSidebar() {
         </Link>
 
         <Link
-          to="/admin/manage-users"
+          to="/manageuser"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#8B3A3A] transition"
         >
           <PeopleIcon />
@@ -39,7 +41,7 @@ function AdminSidebar() {
         </Link>
 
         <Link
-          to="/admin/manage-transactions"
+          to="/managetransactions"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#8B3A3A] transition"
         >
           <SwapHorizIcon />
@@ -47,10 +49,10 @@ function AdminSidebar() {
         </Link>
 
         <Link
-          to="/admin/manage-loans"
+          to="/manageloans"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#8B3A3A] transition"
         >
-          <MonetizationOnIcon />
+          <CurrencyRupeeIcon />
           <span className="font-medium">Manage Loans</span>
         </Link>
       </nav>

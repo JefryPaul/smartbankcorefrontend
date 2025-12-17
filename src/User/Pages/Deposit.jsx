@@ -24,7 +24,7 @@ function Deposit() {
                         className="text-3xl font-bold mb-8 flex items-center gap-2"
                         style={{ color: "#2F1B19" }}
                     >
-                        <PaidIcon sx={{ color: "#8B3A3A" }} />
+                        {/* <PaidIcon sx={{ color: "#8B3A3A" }} /> */}
                         Add Money / Deposit
                     </h1>
 
@@ -55,7 +55,7 @@ function Deposit() {
                             className="w-full mt-6 py-3 rounded-xl font-semibold text-white shadow-md transition-all hover:scale-[1.02]"
                             style={{ backgroundColor: "#8B3A3A" }}
                         >
-                            Proceed to Pay (Razorpay)
+                            Proceed to Pay
                         </button>
                     </div>
 

@@ -18,7 +18,7 @@ function UserLogin() {
             className="text-2xl font-bold text-center mb-6"
             style={{ color: "#2F1B19" }}
           >
-            Login to SmartBank Pro
+            Login to SmartBank Core
           </h1>
 
           {/* Email Field */}
@@ -57,20 +57,12 @@ function UserLogin() {
             Login
           </Button>
 
-          {/* Forgot Password */}
-          <div className="text-center mt-3">
-            <button
-              className="font-medium"
-              style={{ color: "#8B3A3A" }}
-            >
-              Forgot Password?
-            </button>
-          </div>
+          
 
           {/* Register Link */}
           <div className="text-center mt-4" style={{ color: "#2F1B19" }}>
-            Don’t have an account?{" "}
-            <Link to="/register" className="font-semibold" style={{ color: "#8B3A3A" }}>
+            Don't have an account?{" "}
+            <Link to="/userregistration" className="font-semibold" style={{ color: "#8B3A3A" }}>
               Register
             </Link>
           </div>

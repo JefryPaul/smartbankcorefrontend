@@ -2,48 +2,55 @@ import React from 'react'
 import Header from '../Components/Header'
 import Footer from '../Components/Footer'
 import { Link } from 'react-router-dom'
-import { ArrowForward, Security, Payments, AccountBalance } from '@mui/icons-material'
+import { ArrowForward, Security, Payments, AccountBalance } from '@mui/icons-material' 
+import { Button } from "@mui/material";
+
 
 function LandingPage() {
     return (
         <>
             <Header />
 
-            {/* Hero Section */}
-            <div
-                className="h-[520px] flex items-center justify-center bg-cover bg-center relative"
+            <div className="h-[520px] flex items-center justify-center bg-cover bg-center relative"
                 style={{
                     backgroundImage:
-                        'url("https://images.pexels.com/photos/4386375/pexels-photo-4386375.jpeg")',
+                        'url("https://img.freepik.com/premium-vector/banking-service-background-bank-building-icon-made-with-currency-symbols-dollar-euro-yen-pound-icons_127544-803.jpg?semt=ais_incoming&w=740&q=80")',
                 }}
             >
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+                <div className="absolute inset-0 bg-black/60"></div>
 
-                {/* Hero Content */}
                 <div className="relative z-10 text-center text-white px-5">
                     <h1 className="text-5xl font-bold mb-4" style={{ color: '#F8F3F0' }}>
-                        Welcome to SmartBank
+                        Welcome to SmartBank Core
                     </h1>
                     <p className="text-xl mb-8" style={{ color: '#E8DAD4' }}>
                         Secure. Fast. Modern Banking at Your Fingertips.
                     </p>
 
                     <Link to="/userregistration">
-                        <button
-                            className="px-8 py-3 rounded-full text-lg font-semibold transition"
-                            style={{
-                                backgroundColor: '#8B3A3A',
-                                color: '#F8F3F0',
+                        <Button
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "#8B3A3A",
+                                "&:hover": { backgroundColor: "#662828" },
+                                borderRadius: "30px",
+                                px: 4,
+                                py: 1.5,
+                                textTransform: "none",
+                                fontWeight: 600,
+                                color: "#F8F3F0",
+                                fontSize: "18px",
                             }}
                         >
                             Get Started <ArrowForward className="ml-2" />
-                        </button>
+                        </Button>
                     </Link>
+
+
+
                 </div>
             </div>
 
-            {/* Features Section */}
             <section className="py-16 bg-[#F8F3F0] text-center">
                 <h2 className="text-3xl font-semibold mb-3" style={{ color: '#2F1B19' }}>
                     Why Choose SmartBank?
@@ -53,7 +60,6 @@ function LandingPage() {
                 </p>
 
                 <div className="grid md:grid-cols-3 gap-8 px-10 md:px-32">
-                    {/* Feature Card */}
                     <div className="shadow-lg p-8 rounded-xl bg-white hover:scale-105 transition">
                         <Security sx={{ fontSize: 60, color: '#8B3A3A' }} />
                         <h3 className="text-xl font-semibold mt-4">Advanced Security</h3>
@@ -80,7 +86,6 @@ function LandingPage() {
                 </div>
             </section>
 
-            {/* About Section */}
             <section className="py-16 bg-[#E8DAD4]">
                 <div className="md:grid grid-cols-2 gap-10 px-10 md:px-32 items-center">
                     <div>
@@ -108,19 +113,30 @@ function LandingPage() {
                 </div>
             </section>
 
-            {/* CTA Section */}
             <section className="py-16 text-center bg-[#662828] text-white">
                 <h2 className="text-3xl font-semibold mb-3">Start Your Smart Banking Journey</h2>
                 <p className="mb-6 text-lg">Join thousands of users who trust SmartBank daily.</p>
 
                 <Link to="/userregistration">
-                    <button
-                        className="px-10 py-3 rounded-full text-lg font-semibold transition"
-                        style={{ backgroundColor: '#C7A58C', color: '#2F1B19' }}
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: "#C7A58C",
+                            "&:hover": { backgroundColor: "#B89A80" },
+                            borderRadius: "30px",
+                            px: 5,
+                            py: 1.5,
+                            textTransform: "none",
+                            fontWeight: 600,
+                            color: "#2F1B19",
+                            fontSize: "18px",
+                        }}
                     >
                         Create an Account
-                    </button>
+                    </Button>
                 </Link>
+
+
             </section>
 
             <Footer />

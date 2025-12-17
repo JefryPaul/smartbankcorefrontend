@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, IconButton, Button, Tooltip } from "@mui/material";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 
@@ -116,10 +116,14 @@ function Header() {
                         </Button>
                     </Link> */}
 
-                    <AccountCircleIcon
-                        sx={{ fontSize: 50, color: "#ffffffff" }}
-                        className="cursor-pointer"
-                    />
+                    <Link to="/profile">
+                        <AccountCircleIcon
+                            sx={{ fontSize: 50, color: "#ffffffff" }}
+                            className="cursor-pointer transition transform hover:scale-110 hover:opacity-90 active:scale-90 active:opacity-70"
+                        />
+                    </Link>
+
+
 
                 </div>
             </Toolbar>

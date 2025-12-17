@@ -23,7 +23,7 @@ function HomePage() {
                 {/* Top Section */}
                 <div className="flex justify-between items-center mb-10">
                     <h1 className="text-3xl font-bold" style={{ color: "#2F1B19" }}>
-                        Welcome Back 👋
+                        Welcome Back
                     </h1>
 
 
@@ -39,7 +39,7 @@ function HomePage() {
                     >
                         <div className="flex justify-between items-center mb-3">
                             <h2 className="text-xl font-semibold">Current Balance</h2>
-                            <AccountBalanceWalletIcon sx={{ color: "#8B3A3A" }} />
+                            {/* <AccountBalanceWalletIcon sx={{ color: "#8B3A3A" }} /> */}
                         </div>
                         <p className="text-3xl font-bold">₹ 25,500.00</p>
                         <p className="text-sm mt-2">Updated: Today</p>
@@ -52,7 +52,7 @@ function HomePage() {
                     >
                         <div className="flex justify-between items-center mb-3">
                             <h2 className="text-xl font-semibold">Account Details</h2>
-                            <RequestQuoteIcon sx={{ color: "#8B3A3A" }} />
+                            {/* <RequestQuoteIcon sx={{ color: "#8B3A3A" }} /> */}
                         </div>
                         <p>Account No: <b>****1234</b></p>
                         <p>Type: <b>Savings</b></p>
@@ -65,7 +65,7 @@ function HomePage() {
                     >
                         <div className="flex justify-between items-center mb-3">
                             <h2 className="text-xl font-semibold">Loan Summary</h2>
-                            <PaidIcon sx={{ color: "#8B3A3A" }} />
+                            {/* <PaidIcon sx={{ color: "#8B3A3A" }} /> */}
                         </div>
                         <p>Active: <b>YES</b></p>
                         <p>EMI: <b>₹ 1,200 / month</b></p>
@@ -161,7 +161,7 @@ function HomePage() {
                     </table>
 
                     {/* View All Transactions */}
-                    <div className="text-center mt-5">
+                    {/* <div className="text-center mt-5">
                         <Link to="/transactions">
                             <button
                                 className="px-6 py-2 rounded-xl font-semibold shadow"
@@ -170,7 +170,7 @@ function HomePage() {
                                 View All Transactions
                             </button>
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Notifications */}
