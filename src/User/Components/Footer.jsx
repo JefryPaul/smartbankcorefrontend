@@ -4,9 +4,8 @@ function Footer() {
     return (
         <footer
             className="text-center text-white py-10 px-4"
-            style={{ backgroundColor: "#662828" }} // Primary Dark
+            style={{ backgroundColor: "#662828" }}
         >
-            {/* Contact Section */}
             <div className="mb-6">
                 <h3 className="text-2xl font-semibold mb-3" style={{ color: "#C7A58C" }}>
                     Contact Us
@@ -21,7 +20,6 @@ function Footer() {
                 </p>
             </div>
 
-            {/* Social Icons Section */}
             <div className="mb-6">
                 <h3 className="text-2xl font-semibold mb-3" style={{ color: "#C7A58C" }}>
                     Connect With Us
@@ -42,7 +40,6 @@ function Footer() {
                 </div>
             </div>
 
-            {/* Footer Note */}
             <div className="mt-8">
                 <p
                     className="text-lg"

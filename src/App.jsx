@@ -13,6 +13,9 @@ import ManageLoans from './Admin/Pages/ManageLoans'
 import ManageTransactions from './Admin/Pages/ManageTransactions'
 import ManageUser from './Admin/Pages/ManageUser'
 import Profile from './User/Pages/Profile'
+import Insurance from './User/Pages/Insurance'
+import ApplyInsurance from './User/Pages/ApplyInsurance'
+
 
 
 function App() {
@@ -29,6 +32,11 @@ function App() {
         <Route path={'userregistration'} element={<UserRegistration />} />
         <Route path={'withdrawal'} element={<Withdrawal />} />
         <Route path={'profile'} element={<Profile />} />
+
+        {/* Insurance */}
+        <Route path="insurance" element={<Insurance />} />
+        <Route path="insurance/apply/:type" element={<ApplyInsurance />} />
+
 
 
 

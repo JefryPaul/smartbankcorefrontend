@@ -18,7 +18,6 @@ function ManageTransactions() {
       className="p-6"
       style={{ backgroundColor: "#F8F3F0", minHeight: "100vh" }}
     >
-      {/* Page Title */}
       <Typography
         variant="h4"
         sx={{
@@ -30,7 +29,6 @@ function ManageTransactions() {
         Manage Transactions
       </Typography>
 
-      {/* Transactions Table (Static, UI Only) */}
       <Card
         sx={{
           borderRadius: 3,
@@ -65,7 +63,6 @@ function ManageTransactions() {
               </TableHead>
 
               <TableBody>
-                {/* Row 1 */}
                 <TableRow>
                   <TableCell>John Mathew</TableCell>
                   <TableCell>john@gmail.com</TableCell>
@@ -79,7 +76,6 @@ function ManageTransactions() {
                   <TableCell>12 Nov</TableCell>
                 </TableRow>
 
-                {/* Row 2 */}
                 <TableRow>
                   <TableCell>Akhil G</TableCell>
                   <TableCell>akhil@gmail.com</TableCell>
@@ -93,7 +89,6 @@ function ManageTransactions() {
                   <TableCell>11 Nov</TableCell>
                 </TableRow>
 
-                {/* Row 3 */}
                 <TableRow>
                   <TableCell>Sneha M</TableCell>
                   <TableCell>sneha@gmail.com</TableCell>
@@ -107,7 +102,6 @@ function ManageTransactions() {
                   <TableCell>10 Nov</TableCell>
                 </TableRow>
 
-                {/* Row 4 */}
                 <TableRow>
                   <TableCell>Rahul S</TableCell>
                   <TableCell>rahul@gmail.com</TableCell>

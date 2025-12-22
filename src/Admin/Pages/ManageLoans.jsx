@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -12,14 +12,46 @@ import {
   TableContainer,
   Chip,
 } from "@mui/material";
+import { getAllLoansAPI, updateLoanStatusAPI } from "../../services/allAPI";
 
 function ManageLoans() {
+  const [loans, setLoans] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchLoans = async () => {
+    try {
+      setLoading(true);
+      const res = await getAllLoansAPI();
+      if (res.status === 200) {
+        setLoans(res.data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch loans:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLoans();
+  }, []);
+
+  const handleLoanStatus = async (loanId, status) => {
+    try {
+      const res = await updateLoanStatusAPI(loanId, status);
+      if (res.status === 200) {
+        fetchLoans();
+      }
+    } catch (err) {
+      console.error("Failed to update loan status:", err);
+    }
+  };
+
   return (
     <div
       className="p-6 font-sans"
       style={{ background: "#F8F3F0", minHeight: "100vh" }}
     >
-      {/* Page Title */}
       <Typography
         variant="h4"
         sx={{
@@ -31,7 +63,6 @@ function ManageLoans() {
         Manage Loan Requests
       </Typography>
 
-      {/* Loan Table Card */}
       <Card
         sx={{
           borderRadius: 3,
@@ -66,73 +97,72 @@ function ManageLoans() {
               </TableHead>
 
               <TableBody>
-                {/* -------------------- Row 1 -------------------- */}
-                <TableRow>
-                  <TableCell>John Mathew</TableCell>
-                  <TableCell>john@gmail.com</TableCell>
-                  <TableCell>₹ 50,000</TableCell>
-                  <TableCell>24 months</TableCell>
-                  <TableCell>
-                    <Chip label="Pending" color="warning" />
-                  </TableCell>
+                {loading ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center">
+                      Loading...
+                    </TableCell>
+                  </TableRow>
+                ) : loans.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center">
+                      No loan requests found
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  loans.map((loan) => (
+                    <TableRow key={loan._id}>
+                      <TableCell>{loan.userId?.username}</TableCell>
+                      <TableCell>{loan.userId?.email}</TableCell>
+                      <TableCell>₹ {loan.amount}</TableCell>
+                      <TableCell>{loan.tenure} months</TableCell>
+                      <TableCell>
+                        <Chip
+                          label={loan.status.charAt(0).toUpperCase() + loan.status.slice(1)}
+                          color={
+                            loan.status === "pending"
+                              ? "warning"
+                              : loan.status === "approved"
+                                ? "success"
+                                : "error"
+                          }
+                        />
+                      </TableCell>
+                      <TableCell>
+                        {loan.status === "pending" ? (
+                          <>
+                            <Button
+                              variant="contained"
+                              sx={{
+                                mr: 1,
+                                background: "#8B3A3A",
+                                "&:hover": { background: "#662828" },
+                              }}
+                              onClick={() => handleLoanStatus(loan._id, "approved")}
+                            >
+                              Approve
+                            </Button>
 
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        mr: 1,
-                        background: "#8B3A3A",
-                        "&:hover": { background: "#662828" },
-                      }}
-                    >
-                      Approve
-                    </Button>
-
-                    <Button variant="contained" color="error">
-                      Reject
-                    </Button>
-                  </TableCell>
-                </TableRow>
-
-                {/* -------------------- Row 2 -------------------- */}
-                <TableRow>
-                  <TableCell>Akhil G</TableCell>
-                  <TableCell>akhil@gmail.com</TableCell>
-                  <TableCell>₹ 100,000</TableCell>
-                  <TableCell>36 months</TableCell>
-                  <TableCell>
-                    <Chip label="Approved" color="success" />
-                  </TableCell>
-
-                  <TableCell>
-                    <Typography
-                      variant="body2"
-                      sx={{ fontWeight: "bold", color: "#2F1B19" }}
-                    >
-                      Processed
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-
-                {/* -------------------- Row 3 -------------------- */}
-                <TableRow>
-                  <TableCell>Sneha M</TableCell>
-                  <TableCell>sneha@gmail.com</TableCell>
-                  <TableCell>₹ 75,000</TableCell>
-                  <TableCell>12 months</TableCell>
-                  <TableCell>
-                    <Chip label="Rejected" color="error" />
-                  </TableCell>
-
-                  <TableCell>
-                    <Typography
-                      variant="body2"
-                      sx={{ fontWeight: "bold", color: "#2F1B19" }}
-                    >
-                      Processed
-                    </Typography>
-                  </TableCell>
-                </TableRow>
+                            <Button
+                              variant="contained"
+                              color="error"
+                              onClick={() => handleLoanStatus(loan._id, "rejected")}
+                            >
+                              Reject
+                            </Button>
+                          </>
+                        ) : (
+                          <Typography
+                            variant="body2"
+                            sx={{ fontWeight: "bold", color: "#2F1B19" }}
+                          >
+                            Processed
+                          </Typography>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </TableContainer>

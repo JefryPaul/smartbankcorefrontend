@@ -19,7 +19,6 @@ function ManageUser() {
       className="p-6 font-sans"
       style={{ background: "#F8F3F0", minHeight: "100vh" }}
     >
-      {/* Page Title */}
       <Typography
         variant="h4"
         sx={{
@@ -31,7 +30,6 @@ function ManageUser() {
         Manage Users
       </Typography>
 
-      {/* User Table */}
       <Card
         sx={{
           borderRadius: 3,
@@ -66,7 +64,6 @@ function ManageUser() {
               </TableHead>
 
               <TableBody>
-                {/* --------------------- Row 1 --------------------- */}
                 <TableRow>
                   <TableCell>John Mathew</TableCell>
                   <TableCell>john@gmail.com</TableCell>
@@ -93,7 +90,6 @@ function ManageUser() {
                   </TableCell>
                 </TableRow>
 
-                {/* --------------------- Row 2 --------------------- */}
                 <TableRow>
                   <TableCell>Akhil G</TableCell>
                   <TableCell>akhil@gmail.com</TableCell>
@@ -120,7 +116,6 @@ function ManageUser() {
                   </TableCell>
                 </TableRow>
 
-                {/* --------------------- Row 3 --------------------- */}
                 <TableRow>
                   <TableCell>Sneha M</TableCell>
                   <TableCell>sneha@gmail.com</TableCell>

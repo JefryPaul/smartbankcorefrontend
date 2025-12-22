@@ -2,14 +2,80 @@ import React from 'react'
 import Header from '../Components/Header'
 import Footer from '../Components/Footer'
 import { Link } from 'react-router-dom'
-import { ArrowForward, Security, Payments, AccountBalance } from '@mui/icons-material' 
-import { Button } from "@mui/material";
+import { ArrowForward, Security, Payments, AccountBalance } from '@mui/icons-material'
+import { AppBar, Toolbar, IconButton, Button, Tooltip } from "@mui/material";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 
 function LandingPage() {
     return (
         <>
-            <Header />
+            <AppBar
+                position="static"
+                sx={{
+                    backgroundColor: "#8B3A3A",
+                    boxShadow: "0 3px 10px rgba(0,0,0,0.15)",
+                }}
+            >
+                <Toolbar className="flex justify-between items-center">
+
+                    <div className="flex items-center gap-3">
+                        <IconButton size="large" sx={{ color: "#F8F3F0" }}>
+                            <AccountBalanceIcon sx={{ fontSize: 32 }} />
+                        </IconButton>
+
+                        <Link
+                            to="/"
+                            className="text-[26px] font-bold"
+                            style={{ color: "#F8F3F0", textDecoration: "none" }}
+                        >
+                            SmartBank Core
+                        </Link>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+
+                        <Link to="/userlogin">
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: "#B05846",
+                                    "&:hover": { backgroundColor: "#662828" },
+                                    borderRadius: "20px",
+                                    paddingX: 3,
+                                    textTransform: "none",
+                                    fontWeight: 600,
+                                    color: "#F8F3F0",
+                                }}
+                            >
+                                Login
+                            </Button>
+                        </Link>
+
+                        <Link to="/userregistration">
+                            <Button
+                                variant="outlined"
+                                sx={{
+                                    borderColor: "#F8F3F0",
+                                    color: "#F8F3F0",
+                                    "&:hover": { borderColor: "#C7A58C", color: "#C7A58C" },
+                                    borderRadius: "20px",
+                                    paddingX: 3,
+                                    textTransform: "none",
+                                    fontWeight: 600,
+                                }}
+                            >
+                                Create Account
+                            </Button>
+                        </Link>
+
+
+
+                    </div>
+                </Toolbar>
+            </AppBar>
 
             <div className="h-[520px] flex items-center justify-center bg-cover bg-center relative"
                 style={{
@@ -27,7 +93,7 @@ function LandingPage() {
                         Secure. Fast. Modern Banking at Your Fingertips.
                     </p>
 
-                    <Link to="/userregistration">
+                    <Link to="/userlogin">
                         <Button
                             variant="contained"
                             sx={{

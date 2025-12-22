@@ -5,14 +5,11 @@ import AdminSidebar from "../Components/AdminSidebar";
 function AdminDashboard() {
   return (
     <>
-      {/* Header */}
       <AdminHeader />
 
       <div className="flex">
-        {/* Sidebar */}
         <AdminSidebar />
 
-        {/* Main Content Area */}
         <div
           className="flex-1 p-6"
           style={{
@@ -24,9 +21,7 @@ function AdminDashboard() {
             Admin Dashboard
           </h1>
 
-          {/* Dashboard Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Total Users */}
             <div
               className="p-6 rounded-xl shadow"
               style={{ backgroundColor: "#E8DAD4" }}
@@ -39,7 +34,6 @@ function AdminDashboard() {
               </p>
             </div>
 
-            {/* Total Transactions */}
             <div
               className="p-6 rounded-xl shadow"
               style={{ backgroundColor: "#E8DAD4" }}
@@ -52,7 +46,6 @@ function AdminDashboard() {
               </p>
             </div>
 
-            {/* Pending Loans */}
             <div
               className="p-6 rounded-xl shadow"
               style={{ backgroundColor: "#E8DAD4" }}
@@ -66,7 +59,6 @@ function AdminDashboard() {
             </div>
           </div>
 
-          {/* Recent Activity Section */}
           <div className="mt-10">
             <h2
               className="text-2xl font-bold mb-4"

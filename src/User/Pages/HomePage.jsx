@@ -1,135 +1,138 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
-
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import PaidIcon from "@mui/icons-material/Paid";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { Link } from "react-router-dom";
-
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import PersonIcon from "@mui/icons-material/Person";
+import { getUserAPI, getUserTransactionsAPI } from "../../services/allAPI";
 
 function HomePage() {
+
+    const [user, setUser] = useState(() => {
+        return JSON.parse(sessionStorage.getItem("existingUser")) || {};
+    });
+
+    const [transactions, setTransactions] = useState([]);
+
+    const balance = user?.balance ?? 0;
+    const accountNumber = user?.accountNumber ?? "----";
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (!user?._id) return;
+            try {
+                const result = await getUserAPI({ userId: user._id });
+                if (result.status === 200) {
+                    sessionStorage.setItem("existingUser", JSON.stringify(result.data));
+                    setUser(result.data);
+                }
+            } catch (err) {
+                console.error("Failed to fetch user:", err);
+            }
+        };
+        fetchUser();
+    }, [user?._id]);
+
+    useEffect(() => {
+        const fetchTransactions = async () => {
+            if (!user?._id) return;
+            try {
+                const result = await getUserTransactionsAPI(user._id);
+                if (result.status === 200) {
+                    setTransactions(result.data); // latest 5
+                }
+            } catch (err) {
+                console.error("Failed to fetch transactions:", err);
+            }
+        };
+        fetchTransactions();
+    }, [user?._id]);
+
+    const getAmountStyle = (transaction) => {
+        if (transaction.type === "deposit") {
+            return { sign: "+", color: "text-green-600" };
+        }
+
+        if (transaction.type === "withdraw") {
+            return { sign: "-", color: "text-red-600" };
+        }
+
+        if (transaction.type === "transfer") {
+            if (transaction.fromAccount === accountNumber) {
+                return { sign: "-", color: "text-red-600" };
+            }
+            return { sign: "+", color: "text-green-600" };
+        }
+    };
+
+
     return (
         <>
             <Header />
 
             <div className="min-h-screen px-6 py-10" style={{ backgroundColor: "#F8F3F0" }}>
 
-                {/* Top Section */}
-                <div className="flex justify-between items-center mb-10">
-                    <h1 className="text-3xl font-bold" style={{ color: "#2F1B19" }}>
-                        Welcome Back
-                    </h1>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
 
-
-                </div>
-
-                {/*  Dashboard Cards  */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-
-                    {/* Current Balance */}
-                    <div
-                        className="rounded-2xl p-6 shadow-lg"
-                        style={{ backgroundColor: "#E8DAD4", color: "#2F1B19" }}
-                    >
+                    <div className="rounded-2xl p-6 shadow-lg" style={{ backgroundColor: "#E8DAD4" }}>
                         <div className="flex justify-between items-center mb-3">
                             <h2 className="text-xl font-semibold">Current Balance</h2>
-                            {/* <AccountBalanceWalletIcon sx={{ color: "#8B3A3A" }} /> */}
+                            <AccountBalanceWalletIcon sx={{ color: "#8B3A3A" }} />
                         </div>
-                        <p className="text-3xl font-bold">₹ 25,500.00</p>
-                        <p className="text-sm mt-2">Updated: Today</p>
+                        <p className="text-3xl font-bold">₹ {balance}</p>
                     </div>
 
-                    {/* Account Details */}
-                    <div
-                        className="rounded-2xl p-6 shadow-lg"
-                        style={{ backgroundColor: "#E8DAD4", color: "#2F1B19" }}
-                    >
+                    <div className="rounded-2xl p-6 shadow-lg" style={{ backgroundColor: "#E8DAD4" }}>
                         <div className="flex justify-between items-center mb-3">
                             <h2 className="text-xl font-semibold">Account Details</h2>
-                            {/* <RequestQuoteIcon sx={{ color: "#8B3A3A" }} /> */}
+                            <PersonIcon sx={{ color: "#8B3A3A" }} />
                         </div>
-                        <p>Account No: <b>****1234</b></p>
+                        <p>Account No: <b>{accountNumber}</b></p>
                         <p>Type: <b>Savings</b></p>
                     </div>
 
-                    {/* Loan Summary */}
-                    <div
-                        className="rounded-2xl p-6 shadow-lg"
-                        style={{ backgroundColor: "#E8DAD4", color: "#2F1B19" }}
-                    >
+                    <div className="rounded-2xl p-6 shadow-lg" style={{ backgroundColor: "#E8DAD4" }}>
                         <div className="flex justify-between items-center mb-3">
                             <h2 className="text-xl font-semibold">Loan Summary</h2>
-                            {/* <PaidIcon sx={{ color: "#8B3A3A" }} /> */}
+                            <CurrencyRupeeIcon sx={{ color: "#8B3A3A" }} />
                         </div>
                         <p>Active: <b>YES</b></p>
                         <p>EMI: <b>₹ 1,200 / month</b></p>
                     </div>
+
+                    <div className="rounded-2xl p-6 shadow-lg" style={{ backgroundColor: "#E8DAD4" }}>
+                        <div className="flex justify-between items-center mb-3">
+                            <h2 className="text-xl font-semibold">Insurance</h2>
+                            <HealthAndSafetyIcon sx={{ color: "#8B3A3A" }} />
+                        </div>
+                        <p>Status: <b>ACTIVE</b></p>
+                        <p>Policy: <b>Health Insurance</b></p>
+                    </div>
                 </div>
 
-                {/* Quick Actions */}
-                <h2 className="text-xl font-bold mb-4" style={{ color: "#2F1B19" }}>
-                    Quick Actions
-                </h2>
+                <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                    <Link to="/deposit"><Action icon={<ArrowDownwardIcon />} label="Deposit" /></Link>
+                    <Link to="/withdrawal"><Action icon={<ArrowDownwardIcon style={{ transform: "rotate(180deg)" }} />} label="Withdraw" /></Link>
+                    <Link to="/transactions"><Action icon={<SwapHorizIcon />} label="Transfer" /></Link>
+                    <Link to="/loan"><Action icon={<CurrencyRupeeIcon />} label="Loan" /></Link>
+                    <Link to="/insurance"><Action icon={<HealthAndSafetyIcon />} label="Insurance" /></Link>
 
-                    {/* Deposit */}
-                    <Link to="/deposit">
-                        <button
-                            className="py-4 rounded-xl font-semibold shadow-md text-white w-full"
-                            style={{ backgroundColor: "#8B3A3A" }}
-                        >
-                            Deposit
-                        </button>
-                    </Link>
-
-                    {/* Withdraw */}
-                    <Link to="/withdrawal">
-                        <button
-                            className="py-4 rounded-xl font-semibold shadow-md text-white w-full"
-                            style={{ backgroundColor: "#662828" }}
-                        >
-                            Withdraw
-                        </button>
-                    </Link>
-
-                    {/* Transfer */}
-                    <Link to="/transactions">
-                        <button
-                            className="py-4 rounded-xl font-semibold shadow-md text-white w-full"
-                            style={{ backgroundColor: "#B05846" }}
-                        >
-                            Transfer
-                        </button>
-                    </Link>
-
-                    {/* Apply Loan */}
-                    <Link to="/loan">
-                        <button
-                            className="py-4 rounded-xl font-semibold shadow-md text-white w-full"
-                            style={{ backgroundColor: "#C7A58C", color: "#2F1B19" }}
-                        >
-                            Apply Loan
-                        </button>
-                    </Link>
                 </div>
 
-                {/* Recent Transactions */}
                 <div className="bg-white rounded-2xl p-6 shadow-lg mb-10">
-                    <h2 className="text-xl font-bold mb-4" style={{ color: "#2F1B19" }}>
-                        Recent Transactions
-                    </h2>
+                    <h2 className="text-xl font-bold mb-4">Recent Transactions</h2>
 
                     <table className="w-full text-left">
                         <thead>
                             <tr className="border-b">
-                                <th className="py-2">Date</th>
+                                <th>Date</th>
                                 <th>Type</th>
                                 <th>Amount</th>
                                 <th>Status</th>
@@ -137,64 +140,29 @@ function HomePage() {
                         </thead>
 
                         <tbody>
-                            <tr className="border-b">
-                                <td className="py-2">12 Nov</td>
-                                <td>Deposit</td>
-                                <td className="text-green-600">+2000</td>
-                                <td>Success</td>
-                            </tr>
-
-                            <tr className="border-b">
-                                <td className="py-2">11 Nov</td>
-                                <td>Transfer</td>
-                                <td className="text-red-600">-500</td>
-                                <td>Success</td>
-                            </tr>
-
-                            <tr>
-                                <td className="py-2">10 Nov</td>
-                                <td>Withdrawal</td>
-                                <td className="text-red-600">-1000</td>
-                                <td>Failed</td>
-                            </tr>
+                            {transactions.length === 0 ? (
+                                <tr>
+                                    <td colSpan="4" className="py-4 text-center text-gray-500">
+                                        No transactions found
+                                    </td>
+                                </tr>
+                            ) : (
+                                transactions.map(transaction => {
+                                    const amt = getAmountStyle(transaction);
+                                    return (
+                                        <tr key={transaction._id} className="border-b">
+                                            <td>{new Date(transaction.createdAt).toLocaleDateString()}</td>
+                                            <td className="capitalize">{transaction.type}</td>
+                                            <td className={`${amt.color} font-semibold`}>
+                                                {amt.sign}₹{transaction.amount}
+                                            </td>
+                                            <td className="capitalize">{transaction.status}</td>
+                                        </tr>
+                                    );
+                                })
+                            )}
                         </tbody>
                     </table>
-
-                    {/* View All Transactions */}
-                    {/* <div className="text-center mt-5">
-                        <Link to="/transactions">
-                            <button
-                                className="px-6 py-2 rounded-xl font-semibold shadow"
-                                style={{ backgroundColor: "#8B3A3A", color: "white" }}
-                            >
-                                View All Transactions
-                            </button>
-                        </Link>
-                    </div> */}
-                </div>
-
-                {/* Notifications */}
-                <div className="bg-white rounded-2xl p-6 shadow-lg mb-10">
-                    <h2 className="text-xl font-bold mb-4" style={{ color: "#2F1B19" }}>
-                        Notifications
-                    </h2>
-
-                    <ul className="space-y-3">
-                        <li className="flex items-center gap-3">
-                            <NotificationsActiveIcon sx={{ color: "#8B3A3A" }} />
-                            Deposit of ₹2000 received
-                        </li>
-
-                        <li className="flex items-center gap-3">
-                            <NotificationsActiveIcon sx={{ color: "#8B3A3A" }} />
-                            Loan request submitted
-                        </li>
-
-                        <li className="flex items-center gap-3">
-                            <NotificationsActiveIcon sx={{ color: "#8B3A3A" }} />
-                            Profile updated
-                        </li>
-                    </ul>
                 </div>
             </div>
 
@@ -202,5 +170,13 @@ function HomePage() {
         </>
     );
 }
+
+const Action = ({ icon, label }) => (
+    <div className="flex flex-col items-center justify-center gap-2 p-5 rounded-2xl shadow-md text-white cursor-pointer"
+        style={{ backgroundColor: "#8B3A3A" }}>
+        {icon}
+        <span className="font-semibold">{label}</span>
+    </div>
+);
 
 export default HomePage;
