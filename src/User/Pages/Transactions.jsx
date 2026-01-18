@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Card, CardContent, Typography } from "@mui/material";
+import { TextField, Button, Card, CardContent, Typography, Divider } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
@@ -91,114 +91,171 @@ function Transactions() {
     return (
         <>
             <Header />
-            <div className="min-h-screen py-10 px-4" style={{ backgroundColor: "#F8F3F0" }}>
-                <div className="max-w-4xl mx-auto mb-6">
-                    <h1 className="text-3xl font-bold" style={{ color: "#2F1B19" }}>
+
+            <div
+                className="min-h-screen px-6 py-12 flex justify-center"
+                style={{ backgroundColor: "#F8F3F0" }}
+            >
+                <div className="w-full max-w-2xl space-y-8">
+
+                    {/* Page Title */}
+                    <h1
+                        className="text-3xl font-bold"
+                        style={{ color: "#2F1B19" }}
+                    >
                         Transfer Funds
                     </h1>
-                </div>
 
-                <Card className="max-w-4xl mx-auto mb-10 rounded-2xl shadow-md" style={{ backgroundColor: "#E8DAD4" }}>
-                    <CardContent>
-                        <div className="mb-6">
-                            <Typography className="mb-2 font-semibold" style={{ color: "#2F1B19" }}>
-                                Receiver Account No:
-                            </Typography>
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                placeholder="Enter account number"
-                                value={receiverAccount}
-                                onChange={(e) => setReceiverAccount(e.target.value)}
-                                InputProps={{ style: { backgroundColor: "white", borderRadius: 8 } }}
-                            />
-                        </div>
-
-                        <div className="mb-6">
-                            <Typography className="mb-2 font-semibold" style={{ color: "#2F1B19" }}>
-                                Receiver Name:
-                            </Typography>
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                placeholder="Enter receiver name"
-                                value={receiverName}
-                                onChange={(e) => setReceiverName(e.target.value)}
-                                InputProps={{ style: { backgroundColor: "white", borderRadius: 8 } }}
-                            />
-                        </div>
-
-                        <div className="mb-6">
-                            <Typography className="mb-2 font-semibold" style={{ color: "#2F1B19" }}>
-                                Amount:
-                            </Typography>
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                placeholder="₹ Enter amount"
-                                type="number"
-                                value={amount}
-                                onChange={(e) => setAmount(e.target.value)}
-                                InputProps={{ style: { backgroundColor: "white", borderRadius: 8 } }}
-                            />
-                        </div>
-
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            style={{ backgroundColor: "#8B3A3A", padding: "12px", fontSize: "1.1rem", borderRadius: "12px" }}
-                            onClick={handleTransfer}
-                        >
-                            Transfer Money
-                        </Button>
-                    </CardContent>
-                </Card>
-
-                <div className="max-w-4xl mx-auto">
-                    <h2 className="text-xl font-bold mb-4" style={{ color: "#2F1B19" }}>
-                        Past Transfers
-                    </h2>
-
-                    <Card className="rounded-2xl shadow-md" style={{ backgroundColor: "#E8DAD4" }}>
+                    {/* ================= TRANSFER FORM ================= */}
+                    <Card
+                        sx={{
+                            borderRadius: 4,
+                            backgroundColor: "#FFFFFF",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.08)"
+                        }}
+                    >
                         <CardContent>
-                            <div className="grid grid-cols-4 font-semibold mb-3" style={{ color: "#2F1B19" }}>
-                                <span>Amount</span>
-                                <span>To</span>
-                                <span>Status</span>
-                                <span>Date</span>
+
+                            <Typography variant="h6" fontWeight="600" mb={2}>
+                                Transfer Details
+                            </Typography>
+
+                            <Divider className="mb-4" />
+
+                            {/* Receiver Account */}
+                            <div className="mb-4">
+                                <Typography fontWeight="600" mb={1} color="#2F1B19">
+                                    Receiver Account No
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    placeholder="Enter account number"
+                                    value={receiverAccount}
+                                    onChange={(e) => setReceiverAccount(e.target.value)}
+                                />
                             </div>
 
-                            {transfers.length === 0 && (
-                                <div className="py-3 px-2 bg-white rounded-xl text-center">No transfers yet</div>
-                            )}
+                            {/* Receiver Name */}
+                            <div className="mb-4">
+                                <Typography fontWeight="600" mb={1} color="#2F1B19">
+                                    Receiver Name
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    placeholder="Enter receiver name"
+                                    value={receiverName}
+                                    onChange={(e) => setReceiverName(e.target.value)}
+                                />
+                            </div>
 
-                            {transfers.map((t) => {
-                                const status = getStatus(t.status);
-                                return (
-                                    <div key={t._id} className="grid grid-cols-4 py-3 px-2 rounded-xl bg-white mb-2">
-                                        {(() => {
-                                            const amt = getAmountDisplay(t);
-                                            return (
-                                                <span className={`${amt.color} font-semibold`}>
-                                                    {amt.sign}₹{t.amount}
-                                                </span>
-                                            );
-                                        })()}
-                                        <span>{t.toAccount}</span>
-                                        <span className={`font-semibold`} style={{ color: status.color }}>
-                                            {status.icon} {t.status.charAt(0).toUpperCase() + t.status.slice(1)}
-                                        </span>
-                                        <span>{new Date(t.createdAt).toLocaleDateString()}</span>
-                                    </div>
-                                );
-                            })}
+                            {/* Amount */}
+                            <div className="mb-6">
+                                <Typography fontWeight="600" mb={1} color="#2F1B19">
+                                    Amount
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    type="number"
+                                    placeholder="0.00"
+                                    value={amount}
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <Typography
+                                                fontWeight="bold"
+                                                sx={{ color: "#8B3A3A", mr: 1 }}
+                                            >
+                                                ₹
+                                            </Typography>
+                                        )
+                                    }}
+                                />
+                            </div>
+
+                            <Button
+                                fullWidth
+                                onClick={handleTransfer}
+                                sx={{
+                                    py: 1.5,
+                                    backgroundColor: "#8B3A3A",
+                                    color: "#fff",
+                                    fontWeight: "600",
+                                    borderRadius: 3,
+                                    "&:hover": {
+                                        backgroundColor: "#662828"
+                                    }
+                                }}
+                            >
+                                Transfer Money
+                            </Button>
                         </CardContent>
                     </Card>
+
+                    {/* ================= PAST TRANSFERS ================= */}
+                    <Card
+                        sx={{
+                            borderRadius: 4,
+                            backgroundColor: "#FFFFFF",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.06)"
+                        }}
+                    >
+                        <CardContent>
+
+                            <Typography variant="h6" fontWeight="600" mb={2}>
+                                Past Transfers
+                            </Typography>
+
+                            <Divider className="mb-4" />
+
+                            <div className="space-y-3">
+                                {transfers.length === 0 && (
+                                    <Typography color="text.secondary">
+                                        No transfers yet.
+                                    </Typography>
+                                )}
+
+                                {transfers.map((t) => {
+                                    const status = getStatus(t.status);
+                                    const amt = getAmountDisplay(t);
+
+                                    return (
+                                        <div
+                                            key={t._id}
+                                            className="flex justify-between items-center p-4 rounded-xl border bg-[#FAF7F5]"
+                                        >
+                                            <span className={`${amt.color} font-semibold`}>
+                                                {amt.sign}₹{t.amount}
+                                            </span>
+
+                                            <span className="font-medium text-gray-700">
+                                                {t.toAccount}
+                                            </span>
+
+                                            <span
+                                                className="font-semibold"
+                                                style={{ color: status.color }}
+                                            >
+                                                {status.icon} {t.status.charAt(0).toUpperCase() + t.status.slice(1)}
+                                            </span>
+
+                                            <span className="text-gray-500 text-sm">
+                                                {new Date(t.createdAt).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                        </CardContent>
+                    </Card>
+
                 </div>
             </div>
+
             <Footer />
         </>
     );
+
 }
 
 export default Transactions;

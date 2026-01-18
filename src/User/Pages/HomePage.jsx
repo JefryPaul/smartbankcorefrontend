@@ -1,18 +1,38 @@
 import React, { useEffect, useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { Link } from "react-router-dom";
+
+import {
+    Card,
+    CardContent,
+    Typography,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Chip,
+    TableContainer,
+    Divider,
+    Button
+} from "@mui/material";
+
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import PersonIcon from "@mui/icons-material/Person";
+import DownloadIcon from "@mui/icons-material/Download";
+
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
+
 import { getUserAPI, getUserTransactionsAPI } from "../../services/allAPI";
 
 function HomePage() {
-
     const [user, setUser] = useState(() => {
         return JSON.parse(sessionStorage.getItem("existingUser")) || {};
     });
@@ -25,14 +45,10 @@ function HomePage() {
     useEffect(() => {
         const fetchUser = async () => {
             if (!user?._id) return;
-            try {
-                const result = await getUserAPI({ userId: user._id });
-                if (result.status === 200) {
-                    sessionStorage.setItem("existingUser", JSON.stringify(result.data));
-                    setUser(result.data);
-                }
-            } catch (err) {
-                console.error("Failed to fetch user:", err);
+            const result = await getUserAPI({ userId: user._id });
+            if (result.status === 200) {
+                sessionStorage.setItem("existingUser", JSON.stringify(result.data));
+                setUser(result.data);
             }
         };
         fetchUser();
@@ -41,13 +57,9 @@ function HomePage() {
     useEffect(() => {
         const fetchTransactions = async () => {
             if (!user?._id) return;
-            try {
-                const result = await getUserTransactionsAPI(user._id);
-                if (result.status === 200) {
-                    setTransactions(result.data); // latest 5
-                }
-            } catch (err) {
-                console.error("Failed to fetch transactions:", err);
+            const result = await getUserTransactionsAPI(user._id);
+            if (result.status === 200) {
+                setTransactions(result.data);
             }
         };
         fetchTransactions();
@@ -55,115 +67,196 @@ function HomePage() {
 
     const getAmountStyle = (transaction) => {
         if (transaction.type === "deposit") {
-            return { sign: "+", color: "text-green-600" };
+            return { sign: "+", color: "success" };
         }
-
         if (transaction.type === "withdraw") {
-            return { sign: "-", color: "text-red-600" };
+            return { sign: "-", color: "error" };
         }
-
         if (transaction.type === "transfer") {
-            if (transaction.fromAccount === accountNumber) {
-                return { sign: "-", color: "text-red-600" };
-            }
-            return { sign: "+", color: "text-green-600" };
+            return transaction.fromAccount === accountNumber
+                ? { sign: "-", color: "error" }
+                : { sign: "+", color: "success" };
         }
     };
 
+    const downloadPDF = async () => {
+        const input = document.getElementById("result")
+        const canvas = await html2canvas(input, { scale: 2 })
+        const imgData = canvas.toDataURL("image/png")
+
+
+        const pdf = new jsPDF("P", "mm", "a4")
+        const pdfWidth = pdf.internal.pageSize.getWidth()
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+        pdf.addImage(imgData, "png", 0, 0, pdfWidth, pdfHeight)
+        pdf.save("Bank_Statement.pdf")
+    }
 
     return (
         <>
             <Header />
 
             <div className="min-h-screen px-6 py-10" style={{ backgroundColor: "#F8F3F0" }}>
-
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+                    <SummaryCard
+                        title="Current Balance"
+                        value={`₹ ${balance}`}
+                        icon={<AccountBalanceWalletIcon sx={{ color: "#8B3A3A" }} />}
+                    />
 
-                    <div className="rounded-2xl p-6 shadow-lg" style={{ backgroundColor: "#E8DAD4" }}>
-                        <div className="flex justify-between items-center mb-3">
-                            <h2 className="text-xl font-semibold">Current Balance</h2>
-                            <AccountBalanceWalletIcon sx={{ color: "#8B3A3A" }} />
-                        </div>
-                        <p className="text-3xl font-bold">₹ {balance}</p>
-                    </div>
+                    <SummaryCard
+                        title="Account Details"
+                        value={`Acc No: ${accountNumber}`}
+                        subValue="Savings"
+                        icon={<PersonIcon sx={{ color: "#8B3A3A" }} />}
+                    />
 
-                    <div className="rounded-2xl p-6 shadow-lg" style={{ backgroundColor: "#E8DAD4" }}>
-                        <div className="flex justify-between items-center mb-3">
-                            <h2 className="text-xl font-semibold">Account Details</h2>
-                            <PersonIcon sx={{ color: "#8B3A3A" }} />
-                        </div>
-                        <p>Account No: <b>{accountNumber}</b></p>
-                        <p>Type: <b>Savings</b></p>
-                    </div>
+                    <SummaryCard
+                        title="Loan Summary"
+                        value="Active: YES"
+                        subValue="EMI: ₹1200 / month"
+                        icon={<CurrencyRupeeIcon sx={{ color: "#8B3A3A" }} />}
+                    />
 
-                    <div className="rounded-2xl p-6 shadow-lg" style={{ backgroundColor: "#E8DAD4" }}>
-                        <div className="flex justify-between items-center mb-3">
-                            <h2 className="text-xl font-semibold">Loan Summary</h2>
-                            <CurrencyRupeeIcon sx={{ color: "#8B3A3A" }} />
-                        </div>
-                        <p>Active: <b>YES</b></p>
-                        <p>EMI: <b>₹ 1,200 / month</b></p>
-                    </div>
-
-                    <div className="rounded-2xl p-6 shadow-lg" style={{ backgroundColor: "#E8DAD4" }}>
-                        <div className="flex justify-between items-center mb-3">
-                            <h2 className="text-xl font-semibold">Insurance</h2>
-                            <HealthAndSafetyIcon sx={{ color: "#8B3A3A" }} />
-                        </div>
-                        <p>Status: <b>ACTIVE</b></p>
-                        <p>Policy: <b>Health Insurance</b></p>
-                    </div>
+                    <SummaryCard
+                        title="Insurance"
+                        value="ACTIVE"
+                        subValue="Health Insurance"
+                        icon={<HealthAndSafetyIcon sx={{ color: "#8B3A3A" }} />}
+                    />
                 </div>
 
-                <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
+                <Typography variant="h6" fontWeight="bold" mb={2}>
+                    Quick Actions
+                </Typography>
 
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
                     <Link to="/deposit"><Action icon={<ArrowDownwardIcon />} label="Deposit" /></Link>
-                    <Link to="/withdrawal"><Action icon={<ArrowDownwardIcon style={{ transform: "rotate(180deg)" }} />} label="Withdraw" /></Link>
+                    <Link to="/withdrawal"><Action icon={<ArrowDownwardIcon sx={{ transform: "rotate(180deg)" }} />} label="Withdraw" /></Link>
                     <Link to="/transactions"><Action icon={<SwapHorizIcon />} label="Transfer" /></Link>
                     <Link to="/loan"><Action icon={<CurrencyRupeeIcon />} label="Loan" /></Link>
                     <Link to="/insurance"><Action icon={<HealthAndSafetyIcon />} label="Insurance" /></Link>
-
                 </div>
 
-                <div className="bg-white rounded-2xl p-6 shadow-lg mb-10">
-                    <h2 className="text-xl font-bold mb-4">Recent Transactions</h2>
+                <Card
+                    sx={{
+                        borderRadius: 3,
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                        border: "1px solid #eee"
+                    }}
+                >
+                    <div id="result">
+                        <CardContent>
+                            <Typography
+                                variant="h6"
+                                fontWeight="600"
+                                mb={2}
+                                sx={{ color: "#2F1B19" }}
+                            >
+                                Recent Transactions
+                            </Typography>
 
-                    <table className="w-full text-left">
-                        <thead>
-                            <tr className="border-b">
-                                <th>Date</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
+                            <TableContainer sx={{ borderRadius: 2 }}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow sx={{ backgroundColor: "#F8F3F0" }}>
+                                            <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
+                                            <TableCell sx={{ fontWeight: "bold" }}>Type</TableCell>
+                                            <TableCell sx={{ fontWeight: "bold" }}>Amount</TableCell>
+                                            <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
+                                        </TableRow>
+                                    </TableHead>
 
-                        <tbody>
-                            {transactions.length === 0 ? (
-                                <tr>
-                                    <td colSpan="4" className="py-4 text-center text-gray-500">
-                                        No transactions found
-                                    </td>
-                                </tr>
-                            ) : (
-                                transactions.map(transaction => {
-                                    const amt = getAmountStyle(transaction);
-                                    return (
-                                        <tr key={transaction._id} className="border-b">
-                                            <td>{new Date(transaction.createdAt).toLocaleDateString()}</td>
-                                            <td className="capitalize">{transaction.type}</td>
-                                            <td className={`${amt.color} font-semibold`}>
-                                                {amt.sign}₹{transaction.amount}
-                                            </td>
-                                            <td className="capitalize">{transaction.status}</td>
-                                        </tr>
-                                    );
-                                })
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                                    <TableBody>
+                                        {transactions.length === 0 ? (
+                                            <TableRow>
+                                                <TableCell colSpan={4} align="center">
+                                                    <Typography
+                                                        variant="body2"
+                                                        sx={{ color: "text.secondary", py: 3 }}
+                                                    >
+                                                        No transactions found
+                                                    </Typography>
+                                                </TableCell>
+                                            </TableRow>
+                                        ) : (
+                                            transactions.map((tx) => {
+                                                const amt = getAmountStyle(tx);
+
+                                                return (
+                                                    <TableRow
+                                                        key={tx._id}
+                                                        hover
+                                                        sx={{
+                                                            transition: "background-color 0.2s",
+                                                            "&:hover": {
+                                                                backgroundColor: "#FAF7F5"
+                                                            }
+                                                        }}
+                                                    >
+                                                        <TableCell>
+                                                            {new Date(tx.createdAt).toLocaleDateString()}
+                                                        </TableCell>
+
+                                                        <TableCell sx={{ textTransform: "capitalize" }}>
+                                                            {tx.type}
+                                                        </TableCell>
+
+                                                        <TableCell>
+                                                            <Chip
+                                                                label={`${amt.sign} ₹${tx.amount}`}
+                                                                color={amt.color}
+                                                                size="small"
+                                                                sx={{ fontWeight: "500" }}
+                                                            />
+                                                        </TableCell>
+
+                                                        <TableCell sx={{ textTransform: "capitalize" }}>
+                                                            <Chip
+                                                                label={tx.status}
+                                                                size="small"
+                                                                variant="outlined"
+                                                            />
+                                                        </TableCell>
+                                                    </TableRow>
+                                                );
+                                            })
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+
+
+                            <Divider sx={{ my: 3 }} />
+
+
+
+
+                        </CardContent>
+                    </div>
+
+                    <div className="flex justify-center">
+                        <Button
+                            onClick={downloadPDF}
+                            startIcon={<DownloadIcon />}
+                            sx={{
+                                backgroundColor: "#8B3A3A",
+                                color: "#fff",
+                                px: 4,
+                                py: 1,
+                                borderRadius: 2,
+                                textTransform: "none",
+                                fontWeight: "600",
+                                "&:hover": {
+                                    backgroundColor: "#662828",
+                                },
+                            }}
+                        >
+                            Download Bank Statement
+                        </Button>
+                    </div>
+                </Card>
+
             </div>
 
             <Footer />
@@ -171,12 +264,37 @@ function HomePage() {
     );
 }
 
+
+const SummaryCard = ({ title, value, subValue, icon }) => (
+    <Card sx={{ borderRadius: 3, background: "#E8DAD4" }}>
+        <CardContent>
+            <div className="flex justify-between items-center mb-2">
+                <Typography fontWeight="bold">{title}</Typography>
+                {icon}
+            </div>
+            <Typography variant="h6" fontWeight="bold">{value}</Typography>
+            {subValue && <Typography variant="body2">{subValue}</Typography>}
+        </CardContent>
+    </Card>
+);
+
 const Action = ({ icon, label }) => (
-    <div className="flex flex-col items-center justify-center gap-2 p-5 rounded-2xl shadow-md text-white cursor-pointer"
-        style={{ backgroundColor: "#8B3A3A" }}>
-        {icon}
+    <div
+        className="
+      flex flex-col items-center justify-center gap-2 p-5
+      rounded-2xl cursor-pointer text-white
+      transition-all duration-200 ease-in-out
+      shadow-md hover:shadow-lg
+      hover:-translate-y-1
+      active:translate-y-0 active:scale-95
+      select-none
+    "
+        style={{ backgroundColor: "#8B3A3A" }}
+    >
+        <div className="text-2xl">{icon}</div>
         <span className="font-semibold">{label}</span>
     </div>
 );
+
 
 export default HomePage;

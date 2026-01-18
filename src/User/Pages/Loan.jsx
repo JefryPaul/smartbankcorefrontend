@@ -3,6 +3,21 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import { applyLoanAPI, getUserLoansAPI } from "../../services/allAPI";
 
+import {
+    Card,
+    CardContent,
+    Typography,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TableContainer,
+    Divider,
+    Button, 
+    TextField
+} from "@mui/material";
+
 function Loan() {
     const [user, setUser] = useState(() => {
         return JSON.parse(sessionStorage.getItem("existingUser")) || {};
@@ -32,154 +47,193 @@ function Loan() {
 
     const handleSubmit = async () => {
         if (!amount || !tenure) {
-            setMessage("Please enter valid amount and tenure");
+            alert("Please enter valid amount and tenure");
             return;
         }
 
         setLoading(true);
-        setMessage("");
+
         try {
             const reqBody = { userId: user._id, amount, tenure };
             const result = await applyLoanAPI(reqBody);
+
             if (result.status === 200) {
-                setMessage("Loan request submitted successfully!");
+                alert("Loan request submitted successfully!");
                 setAmount("");
                 setTenure("");
                 fetchLoanHistory();
             } else {
-                setMessage(result.data || "Failed to submit loan request");
+                alert("Failed to submit loan request");
             }
         } catch (err) {
             console.error(err);
-            setMessage("Server error while submitting loan request");
+            alert("Server error while submitting loan request");
         }
+
         setLoading(false);
     };
+
 
     return (
         <>
             <Header />
 
-            <div className="min-h-screen px-6 py-10" style={{ backgroundColor: "#F8F3F0" }}>
-                <div className="flex items-center gap-3 mb-8">
-                    <h1 className="text-3xl font-bold" style={{ color: "#2F1B19" }}>
+            <div
+                className="min-h-screen px-6 py-12 flex justify-center"
+                style={{ backgroundColor: "#F8F3F0" }}
+            >
+                <div className="w-full max-w-3xl space-y-8">
+
+                    <Typography
+                        variant="h4"
+                        fontWeight="bold"
+                        sx={{ color: "#2F1B19" }}
+                    >
                         Apply for Loan
-                    </h1>
-                </div>
+                    </Typography>
 
-                <div className="bg-white rounded-2xl shadow-lg p-6 mb-10">
-                    <h2 className="text-xl font-semibold mb-4" style={{ color: "#2F1B19" }}>
-                        Loan Details
-                    </h2>
+                    <Card
+                        sx={{
+                            borderRadius: 4,
+                            backgroundColor: "#FFFFFF",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.08)"
+                        }}
+                    >
+                        <CardContent>
+                            <Typography variant="h6" fontWeight="600" mb={2}>
+                                Loan Details
+                            </Typography>
 
-                    {message && <p className="text-red-600 mb-4">{message}</p>}
+                            <Divider className="mb-4" />
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="font-medium" style={{ color: "#2F1B19" }}>
-                                Loan Amount (₹)
-                            </label>
-                            <input
-                                type="number"
-                                value={amount}
-                                onChange={(e) => setAmount(e.target.value)}
-                                placeholder="Enter amount"
-                                className="w-full mt-1 p-3 rounded-lg border"
-                                style={{ borderColor: "#C7A58C" }}
-                            />
-                        </div>
-
-                        <div>
-                            <label className="font-medium" style={{ color: "#2F1B19" }}>
-                                Time Period (months)
-                            </label>
-                            <input
-                                type="number"
-                                value={tenure}
-                                onChange={(e) => setTenure(e.target.value)}
-                                placeholder="Ex: 12"
-                                className="w-full mt-1 p-3 rounded-lg border"
-                                style={{ borderColor: "#C7A58C" }}
-                            />
-                        </div>
-
-                        <div>
-                            <label className="font-medium" style={{ color: "#2F1B19" }}>
-                                Interest Rate (%)
-                            </label>
-                            <input
-                                type="text"
-                                value="7"
-                                disabled
-                                className="w-full mt-1 p-3 rounded-lg border bg-gray-100"
-                                style={{ borderColor: "#C7A58C" }}
-                            />
-                        </div>
-
-                        <div>
-                            <label className="font-medium" style={{ color: "#2F1B19" }}>
-                                PNR Interest
-                            </label>
-                            <input
-                                type="text"
-                                value={((amount * 7 * tenure) / 100).toFixed(2)}
-                                disabled
-                                className="w-full mt-1 p-3 rounded-lg border bg-gray-100"
-                                style={{ borderColor: "#C7A58C" }}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mt-6">
-                        <button
-                            onClick={handleSubmit}
-                            disabled={loading}
-                            className="w-full py-3 rounded-xl font-semibold shadow-md text-white"
-                            style={{ backgroundColor: "#8B3A3A" }}
-                        >
-                            {loading ? "Submitting..." : "Submit Loan Request"}
-                        </button>
-                    </div>
-                </div>
-
-                <div className="bg-white rounded-2xl shadow-lg p-6">
-                    <h2 className="text-xl font-bold mb-4" style={{ color: "#2F1B19" }}>
-                        Loan History
-                    </h2>
-
-                    <table className="w-full text-left">
-                        <thead>
-                            <tr className="border-b">
-                                <th className="py-2">Amount</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {loanHistory.length === 0 ? (
-                                <tr>
-                                    <td colSpan="3" className="py-4 text-center text-gray-500">
-                                        No loans found
-                                    </td>
-                                </tr>
-                            ) : (
-                                loanHistory.map((loan) => (
-                                    <tr key={loan._id} className="border-b">
-                                        <td>₹{loan.amount}</td>
-                                        <td className="capitalize">{loan.status}</td>
-                                        <td>{new Date(loan.appliedAt).toLocaleDateString()}</td>
-                                    </tr>
-                                ))
+                            {message && (
+                                <Typography color="error" mb={3}>
+                                    {message}
+                                </Typography>
                             )}
-                        </tbody>
-                    </table>
+
+                            <div className="grid md:grid-cols-2 gap-5">
+
+                                <TextField
+                                    label="Loan Amount (₹)"
+                                    type="number"
+                                    value={amount}
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    fullWidth
+                                />
+
+                                <TextField
+                                    label="Time Period (months)"
+                                    type="number"
+                                    value={tenure}
+                                    onChange={(e) => setTenure(e.target.value)}
+                                    fullWidth
+                                />
+
+                                <TextField
+                                    label="Interest Rate (%)"
+                                    value="7"
+                                    disabled
+                                    fullWidth
+                                />
+
+                                <TextField
+                                    label="PNR Interest"
+                                    value={((amount * 7 * tenure) / 100).toFixed(2)}
+                                    disabled
+                                    fullWidth
+                                />
+
+                            </div>
+
+                            <Button
+                                fullWidth
+                                onClick={handleSubmit}
+                                disabled={loading}
+                                sx={{
+                                    mt: 4,
+                                    py: 1.5,
+                                    fontWeight: "600",
+                                    borderRadius: 3,
+                                    backgroundColor: "#8B3A3A",
+                                    "&:hover": {
+                                        backgroundColor: "#662828"
+                                    }
+                                }}
+                            >
+                                {loading ? "Submitting..." : "Submit Loan Request"}
+                            </Button>
+                        </CardContent>
+                    </Card>
+
+                    <Card
+                        sx={{
+                            borderRadius: 4,
+                            backgroundColor: "#FFFFFF",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.06)"
+                        }}
+                    >
+                        <CardContent>
+                            <Typography variant="h6" fontWeight="600" mb={2}>
+                                Loan History
+                            </Typography>
+
+                            <Divider className="mb-4" />
+
+                            <TableContainer>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow sx={{ backgroundColor: "#F8F3F0" }}>
+                                            <TableCell sx={{ fontWeight: "bold" }}>Amount</TableCell>
+                                            <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
+                                            <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+
+                                    <TableBody>
+                                        {loanHistory.length === 0 ? (
+                                            <TableRow>
+                                                <TableCell colSpan={3} align="center">
+                                                    <Typography color="text.secondary" py={3}>
+                                                        No loans found
+                                                    </Typography>
+                                                </TableCell>
+                                            </TableRow>
+                                        ) : (
+                                            loanHistory.map((loan) => (
+                                                <TableRow
+                                                    key={loan._id}
+                                                    hover
+                                                    sx={{
+                                                        "&:hover": {
+                                                            backgroundColor: "#FAF7F5"
+                                                        }
+                                                    }}
+                                                >
+                                                    <TableCell>₹{loan.amount}</TableCell>
+                                                    <TableCell sx={{ textTransform: "capitalize" }}>
+                                                        {loan.status}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {new Date(loan.appliedAt).toLocaleDateString()}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+
+                        </CardContent>
+                    </Card>
+
                 </div>
             </div>
 
             <Footer />
         </>
     );
+
 }
 
 export default Loan;

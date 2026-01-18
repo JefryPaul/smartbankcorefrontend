@@ -4,10 +4,16 @@ import {
     Button,
     Card,
     CardContent,
-    Typography
+    Typography,
+    Divider,
+    Chip
 } from "@mui/material";
 import { withdrawAPI, withdrawHistoryAPI } from "../../services/allAPI";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"; 
+
+import Header from "../Components/Header";
+
+
 
 
 function Withdrawal() {
@@ -67,80 +73,138 @@ function Withdrawal() {
     };
 
     return (
-        <div className="min-h-screen py-10 px-5" style={{ backgroundColor: "#F8F3F0" }}>
-            <div className="max-w-3xl mx-auto mb-6">
-                <h1 className="text-3xl font-bold" style={{ color: "#2F1B19" }}>
-                    Withdraw Money
-                </h1>
-            </div>
+        <>
 
-            <Card
-                className="max-w-3xl mx-auto rounded-2xl shadow-md mb-10"
-                style={{ backgroundColor: "#E8DAD4" }}
+
+            <Header />
+
+
+            <div
+                className="min-h-screen px-6 py-12 flex justify-center"
+                style={{ backgroundColor: "#F8F3F0" }}
             >
-                <CardContent>
-                    <Typography className="mb-2 font-semibold">Enter Amount:</Typography>
+                <div className="w-full max-w-2xl space-y-8">
 
-                    <TextField
-                        fullWidth
-                        type="number"
-                        placeholder="₹ Enter amount"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        InputProps={{ style: { backgroundColor: "white", borderRadius: 8 } }}
-                    />
-
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        onClick={handleWithdraw}
-                        style={{
-                            backgroundColor: "#8B3A3A",
-                            padding: "12px",
-                            fontSize: "1.1rem",
-                            borderRadius: "12px",
-                            marginTop: "20px"
-                        }}
+                    {/* Page Title */}
+                    <Typography
+                        variant="h4"
+                        fontWeight="bold"
+                        sx={{ color: "#2F1B19" }}
                     >
                         Withdraw Money
-                    </Button>
-                </CardContent>
-            </Card>
+                    </Typography>
 
-            <div className="max-w-3xl mx-auto">
-                <h2 className="text-xl font-bold mb-4">Past Withdrawals</h2>
+                    {/* ================= WITHDRAW FORM ================= */}
+                    <Card
+                        sx={{
+                            borderRadius: 4,
+                            backgroundColor: "#FFFFFF",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.08)"
+                        }}
+                    >
+                        <CardContent>
+                            <Typography variant="h6" fontWeight="600" mb={2}>
+                                Enter Withdrawal Amount
+                            </Typography>
 
-                <Card className="rounded-2xl shadow-md">
-                    <CardContent>
-                        <div className="grid grid-cols-3 font-semibold mb-3">
-                            <span>Amount</span>
-                            <span>Status</span>
-                            <span>Date</span>
-                        </div>
+                            <Divider className="mb-4" />
 
-                        {withdrawals.length === 0 && (
-                            <p className="text-gray-500">No withdrawals yet.</p>
-                        )}
+                            <TextField
+                                fullWidth
+                                type="number"
+                                placeholder="0.00"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                InputProps={{
+                                    startAdornment: (
+                                        <Typography
+                                            fontWeight="bold"
+                                            sx={{ color: "#8B3A3A", mr: 1 }}
+                                        >
+                                            ₹
+                                        </Typography>
+                                    )
+                                }}
+                            />
 
-                        {withdrawals.map((transaction) => {
-                            const { color, icon } = getStatusStyle(transaction.status);
-                            return (
-                                <div
-                                    key={transaction._id}
-                                    className="grid grid-cols-3 py-3 px-2 rounded-xl bg-white mb-2"
-                                >
-                                    <span className="text-red-600 font-semibold">-₹{transaction.amount}</span>
-                                    <span className="font-semibold" style={{ color }}>
-                                        {icon} {transaction.status}
-                                    </span>
-                                    <span>{new Date(transaction.createdAt).toLocaleDateString()}</span>
-                                </div>
-                            );
-                        })}
-                    </CardContent>
-                </Card>
+                            <Button
+                                fullWidth
+                                onClick={handleWithdraw}
+                                sx={{
+                                    mt: 4,
+                                    py: 1.5,
+                                    backgroundColor: "#8B3A3A",
+                                    color: "#fff",
+                                    fontWeight: "600",
+                                    borderRadius: 3,
+                                    "&:hover": {
+                                        backgroundColor: "#662828"
+                                    }
+                                }}
+                            >
+                                Withdraw Money
+                            </Button>
+                        </CardContent>
+                    </Card>
+
+                    {/* ================= PAST WITHDRAWALS ================= */}
+                    <Card
+                        sx={{
+                            borderRadius: 4,
+                            backgroundColor: "#FFFFFF",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.06)"
+                        }}
+                    >
+                        <CardContent>
+                            <Typography variant="h6" fontWeight="600" mb={2}>
+                                Past Withdrawals
+                            </Typography>
+
+                            <Divider className="mb-4" />
+
+                            <div className="space-y-3">
+                                {withdrawals.length === 0 && (
+                                    <Typography color="text.secondary">
+                                        No withdrawals yet.
+                                    </Typography>
+                                )}
+
+                                {withdrawals.map((transaction) => {
+                                    const { color, icon } = getStatusStyle(transaction.status);
+
+                                    return (
+                                        <div
+                                            key={transaction._id}
+                                            className="flex justify-between items-center p-4 rounded-xl border bg-[#FAF7F5]"
+                                        >
+                                            <Typography fontWeight="600" color="error">
+                                                -₹{transaction.amount}
+                                            </Typography>
+
+                                            <Chip
+                                                label={transaction.status}
+                                                size="small"
+                                                sx={{
+                                                    fontWeight: 500,
+                                                    color,
+                                                    borderColor: color
+                                                }}
+                                                variant="outlined"
+                                            />
+
+                                            <Typography color="text.secondary" variant="body2">
+                                                {new Date(transaction.createdAt).toLocaleDateString()}
+                                            </Typography>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

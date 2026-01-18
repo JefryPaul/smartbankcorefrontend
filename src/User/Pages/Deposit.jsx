@@ -4,6 +4,8 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import { depositAPI, depositHistoryAPI } from "../../services/allAPI";
 
+import { Card, CardContent, Typography, TextField, Button, Divider, Chip } from "@mui/material";
+
 function Deposit() {
     const [amount, setAmount] = useState("");
     const [deposits, setDeposits] = useState([]);
@@ -55,59 +57,117 @@ function Deposit() {
         <>
             <Header />
 
-            <div className="min-h-screen px-6 py-10 flex justify-center" style={{ backgroundColor: "#F8F3F0" }}>
-                <div className="w-full max-w-2xl">
+            <div
+                className="min-h-screen px-6 py-12 flex justify-center"
+                style={{ backgroundColor: "#F8F3F0" }}
+            >
+                <div className="w-full max-w-2xl space-y-8">
 
-                    {/* Page Title */}
-                    <h1 className="text-3xl font-bold mb-8" style={{ color: "#2F1B19" }}>
+                    <Typography
+                        variant="h4"
+                        fontWeight="bold"
+                        sx={{ color: "#2F1B19" }}
+                    >
                         Add Money / Deposit
-                    </h1>
+                    </Typography>
 
-                    {/* Deposit Form */}
-                    <div className="p-6 rounded-2xl shadow-lg mb-8" style={{ backgroundColor: "#E8DAD4" }}>
-                        <label className="block font-semibold mb-3 text-lg">Enter Amount:</label>
+                    <Card
+                        sx={{
+                            borderRadius: 4,
+                            backgroundColor: "#FFFFFF",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.08)"
+                        }}
+                    >
+                        <CardContent>
+                            <Typography variant="h6" fontWeight="600" mb={2}>
+                                Enter Deposit Amount
+                            </Typography>
 
-                        <div className="flex items-center bg-white rounded-xl px-4 py-3 shadow-inner border">
-                            <span className="text-xl font-bold mr-2" style={{ color: "#8B3A3A" }}>₹</span>
-                            <input
+                            <Divider className="mb-4" />
+
+                            <TextField
+                                fullWidth
                                 type="number"
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                                 placeholder="0.00"
-                                className="w-full outline-none text-lg bg-transparent"
+                                InputProps={{
+                                    startAdornment: (
+                                        <Typography
+                                            fontWeight="bold"
+                                            sx={{ color: "#8B3A3A", mr: 1 }}
+                                        >
+                                            ₹
+                                        </Typography>
+                                    )
+                                }}
                             />
-                        </div>
 
-                        <button
-                            onClick={handleDeposit}
-                            className="w-full mt-6 py-3 rounded-xl font-semibold text-white shadow-md transition-all hover:scale-[1.02]"
-                            style={{ backgroundColor: "#8B3A3A" }}
-                        >
-                            Proceed to Pay
-                        </button>
-                    </div>
+                            <Button
+                                fullWidth
+                                onClick={handleDeposit}
+                                sx={{
+                                    mt: 4,
+                                    py: 1.5,
+                                    backgroundColor: "#8B3A3A",
+                                    color: "#fff",
+                                    fontWeight: "600",
+                                    borderRadius: 3,
+                                    "&:hover": {
+                                        backgroundColor: "#662828"
+                                    }
+                                }}
+                            >
+                                Deposit
+                            </Button>
+                        </CardContent>
+                    </Card>
 
-                    <div className="p-6 rounded-2xl shadow-lg bg-white">
-                        <h2 className="text-xl font-bold mb-4" style={{ color: "#2F1B19" }}>
-                            Past Deposits
-                        </h2>
+                    <Card
+                        sx={{
+                            borderRadius: 4,
+                            backgroundColor: "#FFFFFF",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.06)"
+                        }}
+                    >
+                        <CardContent>
+                            <Typography variant="h6" fontWeight="600" mb={2}>
+                                Past Deposits
+                            </Typography>
 
-                        <div className="space-y-4">
-                            {deposits.length === 0 && <p className="text-gray-500">No deposits yet.</p>}
-                            {deposits.map((transaction) => (
-                                <div key={transaction._id} className="flex justify-between items-center p-3 rounded-lg border">
-                                    <span className="font-semibold text-lg">₹{transaction.amount}</span>
-                                    <span className="flex items-center gap-1 font-semibold"
-                                        style={{ color: "green" }}>
-                                        <CheckCircleIcon sx={{ fontSize: 20 }} />
-                                        {transaction.status}
-                                    </span>
+                            <Divider className="mb-4" />
 
-                                    <span className="text-gray-700">{new Date(transaction.createdAt).toLocaleDateString()}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                            <div className="space-y-3">
+                                {deposits.length === 0 && (
+                                    <Typography color="text.secondary">
+                                        No deposits yet.
+                                    </Typography>
+                                )}
+
+                                {deposits.map((transaction) => (
+                                    <div
+                                        key={transaction._id}
+                                        className="flex justify-between items-center p-4 rounded-xl border bg-[#FAF7F5]"
+                                    >
+                                        <Typography fontWeight="600">
+                                            ₹{transaction.amount}
+                                        </Typography>
+
+                                        <Chip
+                                            icon={<CheckCircleIcon />}
+                                            label={transaction.status}
+                                            color="success"
+                                            size="small"
+                                        />
+
+                                        <Typography color="text.secondary" variant="body2">
+                                            {new Date(transaction.createdAt).toLocaleDateString()}
+                                        </Typography>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
 
                 </div>
             </div>

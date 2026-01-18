@@ -15,6 +15,9 @@ import ManageUser from './Admin/Pages/ManageUser'
 import Profile from './User/Pages/Profile'
 import Insurance from './User/Pages/Insurance'
 import ApplyInsurance from './User/Pages/ApplyInsurance'
+import HealthInsurance from './User/Pages/HealthInsurance'
+import VehicleInsurance from './User/Pages/VehicleInsurance'
+import HomeInsurance from './User/Pages/HomeInsurance'
 
 
 
@@ -36,6 +39,10 @@ function App() {
         {/* Insurance */}
         <Route path="insurance" element={<Insurance />} />
         <Route path="insurance/apply/:type" element={<ApplyInsurance />} />
+        <Route path="healthinsurance" element={<HealthInsurance />} />
+        <Route path="vehicleinsurance" element={<VehicleInsurance />} />
+        <Route path="homeinsurance" element={<HomeInsurance />} />
+
 
 
 
